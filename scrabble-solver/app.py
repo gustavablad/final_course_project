@@ -1,8 +1,9 @@
 # pip install flask
 # from flask import Flask
+
 from collections import Counter
 
-letter_points = {
+LETTER_POINTS = {
     "a": 1, "b": 3, "c": 3, "d": 2, "e": 1, 
     "f": 4, "g": 2, "h": 4, "i": 1, "j": 8, 
     "k": 5, "l": 1, "m": 3, "n": 1, "o": 1, 
@@ -12,15 +13,16 @@ letter_points = {
 }
 # table of letters and their respective scrabble points
 
-with open ("scrabble-solver/dictionary.txt") as list:
-    valid_words = set(word.strip().lower() for word in list)
+with open ("scrabble-solver/dictionary.txt") as f:
+    VALID_WORDS = set(word.strip().lower() for word in f)
 # set of all valid words in compliance with an online scrabble dictionary
 
 tiles = input("What tiles do you have? Use only the letters on the tiles and '*' for blank tiles. Do not use any commas or periods. Example of rack with 7 tiles: *egit*r. : ")
-tile_count = Counter(tiles)
+# tile_count = Counter(tiles)
 
+remaining_tiles = list(tiles)
 def can_build_word(word, tiles):
-    remaining_tiles = list(tiles)
+    
     for letter in word:
         if letter in remaining_tiles:
             remaining_tiles.remove(letter)
@@ -29,3 +31,22 @@ def can_build_word(word, tiles):
         else:
             return False
     return True
+
+def calculate_score(word, tiles):
+    score = 0
+    for letter in word:
+        if letter in remaining_tiles:
+            score += LETTER_POINTS[letter]
+            remaining_tiles.remove(letter)
+        elif "*" in remaining_tiles:
+            remaining_tiles.remove("*")
+    return score
+
+def find_words(tiles):
+    results = []
+    for word in VALID_WORDS:
+        if can_build_word(word, tiles):
+            results.append({"word": word, "score": calculate_score(word, tiles), "length": len(word)})
+    return results
+
+
