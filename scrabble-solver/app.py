@@ -1,6 +1,5 @@
-# pip install flask
-# from flask import Flask
-
+from flask import Flask
+# if run in terminal: "$ pip --version" and it shows different version from python interpreter, change interpreter to pip's version
 from collections import Counter
 
 LETTER_POINTS = {
@@ -17,13 +16,13 @@ with open ("scrabble-solver/dictionary.txt") as f:
     VALID_WORDS = set(word.strip().lower() for word in f)
 # set of all valid words in compliance with an online scrabble dictionary
 
-tiles = input("What tiles do you have? Use only the letters on the tiles and '*' for blank tiles. Do not use any commas or periods. Example of rack with 7 tiles: *egit*r. : ")
+player_tiles = input("What tiles do you have? Use only the letters on the tiles and '*' for blank tiles. Do not use any commas or periods. Example of rack with 7 tiles: *egit*r. : ")
 # tile_count = Counter(tiles)
 
-remaining_tiles = list(tiles)
 def can_build_word(word, tiles):
     
     for letter in word:
+        remaining_tiles = list(player_tiles)
         if letter in remaining_tiles:
             remaining_tiles.remove(letter)
         elif "*" in remaining_tiles:
@@ -35,6 +34,7 @@ def can_build_word(word, tiles):
 def calculate_score(word, tiles):
     score = 0
     for letter in word:
+        remaining_tiles = list(player_tiles)
         if letter in remaining_tiles:
             score += LETTER_POINTS[letter]
             remaining_tiles.remove(letter)
@@ -49,4 +49,5 @@ def find_words(tiles):
             results.append({"word": word, "score": calculate_score(word, tiles), "length": len(word)})
     return results
 
-
+results = find_words(player_tiles)
+print(results)
