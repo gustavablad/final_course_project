@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 # if run in terminal: "$ pip --version" and it shows different version from python interpreter, change interpreter to pip's version
 from collections import Counter
 
@@ -14,16 +14,16 @@ LETTER_POINTS = {
 }
 # table of letters and their respective scrabble points
 
-with open ("scrabble-solver/dictionary.txt") as f:
+with open ("dictionary.txt") as f:
     VALID_WORDS = set(word.strip().lower() for word in f)
 # set of all valid words in compliance with an online scrabble dictionary
 
-player_tiles = input(
-    "What tiles do you have? " \
-    "Use only the letters on the tiles and '*' for blank tiles. " \
-    "Do not use any commas or periods. " \
-    "Example of rack with 7 tiles: *egit*r. : "
-).lower()
+#player_tiles = input(
+#    "What tiles do you have? " \
+#    "Use only the letters on the tiles and '*' for blank tiles. " \
+#    "Do not use any commas or periods. " \
+#    "Example of rack with 7 tiles: e*git*r. : "
+#).lower()
 
 def can_build_word(word, tiles):
     tile_count = Counter(tiles)
@@ -65,6 +65,8 @@ def find_words(tiles):
     for word in VALID_WORDS:
         if len(word) > len(tiles):
             continue
+        if len(word) < 2:
+            continue
 
         if can_build_word(word, tiles):
             results.append({
@@ -72,13 +74,24 @@ def find_words(tiles):
                 "score": calculate_score(word, tiles), 
                 "length": len(word)
             })
+    results.sort(key=lambda x: (-x["score"], -x["length"], x["word"]))   
     
+    return results[:100]
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    results = []
+    tiles = ""
     
-    return results
+    if request.method == "POST":
+        tiles = request.form["tiles"].lower()
+        results = find_words(tiles)
+    
+    return render_template(
+        "index.html", 
+        results=results, 
+        tiles=tiles
+    )
 
-results = find_words(player_tiles)
-print(results)
-
-
-#if __name__ == "__main__":
-#    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
