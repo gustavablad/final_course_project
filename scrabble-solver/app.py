@@ -18,7 +18,12 @@ with open ("scrabble-solver/dictionary.txt") as f:
     VALID_WORDS = set(word.strip().lower() for word in f)
 # set of all valid words in compliance with an online scrabble dictionary
 
-player_tiles = input("What tiles do you have? Use only the letters on the tiles and '*' for blank tiles. Do not use any commas or periods. Example of rack with 7 tiles: *egit*r. : ")
+player_tiles = input(
+    "What tiles do you have? " \
+    "Use only the letters on the tiles and '*' for blank tiles. " \
+    "Do not use any commas or periods. " \
+    "Example of rack with 7 tiles: *egit*r. : "
+).lower()
 
 def can_build_word(word, tiles):
     tile_count = Counter(tiles)
@@ -29,14 +34,11 @@ def can_build_word(word, tiles):
     for letter, needed in Counter(word).items():
         available = tile_count.get(letter, 0)
 
-        if needed > available:
-            missing = needed - available
-
-            if missing <= blanks:
-                blanks -= missing
+        if available < needed:
+            if blanks >= needed - available:
+                blanks -= needed - available
             else:
                 return False
-            
     return True
 
 def calculate_score(word, tiles):
@@ -59,9 +61,17 @@ def calculate_score(word, tiles):
 
 def find_words(tiles):
     results = []
+
     for word in VALID_WORDS:
+        if len(word) > len(tiles):
+            continue
+
         if can_build_word(word, tiles):
-            results.append({"word": word, "score": calculate_score(word, tiles), "length": len(word)})
+            results.append({
+                "word": word, 
+                "score": calculate_score(word, tiles), 
+                "length": len(word)
+            })
     
     
     return results
