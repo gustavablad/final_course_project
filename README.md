@@ -18,7 +18,7 @@ Enter the letters on your tile rack and the solver returns the 1000 highest scor
 
 - Flask
 
-*Installment order*
+*Installation order*
 
 1. Clone the repository:
 
@@ -67,3 +67,7 @@ Only letters a-z and * are accepted as valid input values.
 Github user gustavablad: https://github.com/gustavablad
 
 Contact information: gustav.ablad@edu.huddinge.se
+
+**Notes:**
+
+Ai was used as an inspirational and problem-solving tool in the creation of this project.
