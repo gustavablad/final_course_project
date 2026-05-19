@@ -9,7 +9,8 @@ def index():
     Renders the main page and handles form submissions for tile input.
     
     GET: Displays the form for tile input.
-    POST: Validates the input tiles and finds valid words based on the input. Passes"""
+    POST: Validates the input tiles and finds valid words based on the input.
+    """
     results = []
     tiles = ""
     error = None
