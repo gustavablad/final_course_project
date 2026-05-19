@@ -8,11 +8,13 @@
 </head>
 <body>
 
-<div class="parallax">
+<div class="background">
     <div class="overlay">
         <div class="container">
 
             <h1>Scrabble Solver</h1>
+
+            <p>Enter your Scrabble tiles to find possible words! (Blanks are represented by '*')</p>
 
             <form method="POST">
                 <input
@@ -42,6 +44,14 @@
                 </div>
 
                 {% endfor %}
+                
+                {% if error %}
+
+                <p class="error">
+                    {{ error }}
+                </p>
+
+                {% endif %}
 
             </div>
         </div>

@@ -12,7 +12,7 @@ body {
     background-color: #0f172a;
 }
 
-.parallax {
+.background {
     background-image: url("scrabble.jpg");
 
 
@@ -26,8 +26,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    padding: 40px 20px;
 }
 
 .overlay {
@@ -51,6 +49,14 @@ h1 {
     margin-bottom: 30px;
 
     letter-spacing: 2px;
+}
+
+p {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+
+    color: #cbd5e1;
 }
 
 form {

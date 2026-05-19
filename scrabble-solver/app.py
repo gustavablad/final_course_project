@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 # if run in terminal: "$ pip --version" and it shows different version from python interpreter, change interpreter to pip's version
-from solver import find_words
+from solver import find_words, validate_tiles
 
 app = Flask(__name__)
 
@@ -8,15 +8,22 @@ app = Flask(__name__)
 def index():
     results = []
     tiles = ""
-    
+    error = None
+
     if request.method == "POST":
         tiles = request.form["tiles"].lower()
+        
+        error = validate_tiles(tiles)
+
+    if error is None:
+
         results = find_words(tiles)
     
     return render_template(
         "index.html", 
         results=results, 
-        tiles=tiles
+        tiles=tiles,
+        error=error
     )
 
 if __name__ == "__main__":

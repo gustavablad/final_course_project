@@ -14,6 +14,28 @@ with open ("dictionary.txt") as f:
     VALID_WORDS = set(word.strip().lower() for word in f)
 # set of all valid words in compliance with an online scrabble dictionary
 
+
+
+def validate_tiles(tiles):
+
+    ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyz*"
+
+    if len(tiles) > 15:
+
+        return "You cannot input more than 15 tiles since a standard scrabble board has 15 rows and 15 columns."
+
+    if len(tiles) == 0:
+
+        return "Please enter at least one tile."
+
+    for character in tiles:
+
+        if character not in ALLOWED_CHARACTERS:
+
+            return "Only letters a-z and '*' are allowed."
+
+    return None
+
 def can_build_word(word, tiles):
     tile_count = Counter(tiles)
 
