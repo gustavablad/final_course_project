@@ -18,13 +18,6 @@ with open ("dictionary.txt") as f:
     VALID_WORDS = set(word.strip().lower() for word in f)
 # set of all valid words in compliance with an online scrabble dictionary
 
-#player_tiles = input(
-#    "What tiles do you have? " \
-#    "Use only the letters on the tiles and '*' for blank tiles. " \
-#    "Do not use any commas or periods. " \
-#    "Example of rack with 7 tiles: e*git*r. : "
-#).lower()
-
 def can_build_word(word, tiles):
     tile_count = Counter(tiles)
 
@@ -76,7 +69,7 @@ def find_words(tiles):
             })
     results.sort(key=lambda x: (-x["score"], -x["length"], x["word"]))   
     
-    return results[:100]
+    return results[:1000]
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -94,4 +87,4 @@ def index():
     )
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5002)
